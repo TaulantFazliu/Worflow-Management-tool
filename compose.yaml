@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    container_name: workflow-mng-db
+    restart: unless-stopped
+    environment:
+      - 'POSTGRES_DB=workflowmng'
+      - 'POSTGRES_PASSWORD=abc'
+    ports:
+      - '5432:5432'
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: workflow-mng-image:latest
+    container_name: workflow-mng-image
+    ports:
+      - '8000:8000'
+    working_dir: /app
+    entrypoint: ["java", "-jar", "app.jar"]
